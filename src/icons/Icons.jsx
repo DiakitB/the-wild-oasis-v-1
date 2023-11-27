@@ -1,0 +1,11 @@
+import Icon from "react-icons-kit";
+import { home } from "react-icons-kit/icomoon/home";
+import { calendar } from "react-icons-kit/icomoon/calendar";
+import { cog } from "react-icons-kit/iconic/cog";
+import { home3 } from "react-icons-kit/icomoon/home3";
+import { users } from "react-icons-kit/icomoon/users";
+export const IconHome = () => <Icon icon={home} />;
+export const CalendarIcon = () => <Icon icon={calendar} />;
+export const Setting = () => <Icon icon={cog} />;
+export const Cabs = () => <Icon icon={home3} />;
+export const Useres = () => <Icon icon={users} />;
