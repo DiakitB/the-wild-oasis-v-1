@@ -64,7 +64,7 @@ export default function CabinRow({ cabin }) {
     },
     onError: (err) => toast.error(err.message),
   });
-  console.log(cabin);
+  
   return (
     <TableRow role="row">
       <Img src={image} />
