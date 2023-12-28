@@ -10,8 +10,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNewCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
-
-
 const FormRow = styled.div`
   display: grid;
   align-items: center;
@@ -48,16 +46,11 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({cabinData = {}}) {
-
-  
-  const { id: dataId, ...editeData } = cabinData
-  const isEditSession = Boolean(dataId)
-  const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: isEditSession ? editeData: {}
-  });
+function CreateCabinForm() {
+  const { register, handleSubmit, reset, formState } = useForm();
   const { errors } = formState
+  
+  const queryClient = useQueryClient();
   const { mutate, isloading: isCreating } = useMutation({
     mutationFn: createNewCabin,
     onSuccess: () => {
