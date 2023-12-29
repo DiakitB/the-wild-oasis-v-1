@@ -51,7 +51,7 @@ function CreateCabinForm() {
   const { errors } = formState
   
   const queryClient = useQueryClient();
-  const { mutate, isloading: isCreating } = useMutation({
+  const { mutate: createCabin, isloading: isCreating } = useMutation({
     mutationFn: createNewCabin,
     onSuccess: () => {
       toast.success("New cabin successfully created");
@@ -63,10 +63,25 @@ function CreateCabinForm() {
       // queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
   });
+  const { mutate: editCabin, isloading: isEditing } = useMutation({
+    mutationFn:({newCabinData, id})=> createNewCabin(newCabinData, id),
+    onSuccess: () => {
+      toast.success("New cabin successfully created");
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      reset();
+    },
+    onError: (err) => {
+      toast.error(err.message);
+      // queryClient.invalidateQueries({ queryKey: ["cabins"] });
+    },
+  });
 
+  const isWorking = isCreating || isEditing
   function onSubmit(data) {
+
+    if(isEd)
     
-    mutate({...data , image: data.image[0]});
+    createCabin({...data , image: data.image[0]});
   }
   function onError(errors) {
     console.log(errors)
@@ -75,19 +90,23 @@ function CreateCabinForm() {
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" {...register("name", { required: "This field is required" })} />
+        <Input
+          type="text"
+          id="name"
+        disabled={isWorking}
+          {...register("name", { required: "This field is required" })} />
         {errors?.name?.message && <Error>{errors.name.message }</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" {...register("maxCapacity", { required: "This field is required" })} />
+        <Input type="number" id="maxCapacity"   disabled={isWorking} {...register("maxCapacity", { required: "This field is required" })} />
         {errors?.name?.message && <Error>{errors.name.message }</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" {...register("regularPrice", { required: "This field is required" })} />
+        <Input type="number" id="regularPrice"   disabled={isWorking} {...register("regularPrice", { required: "This field is required" })} />
         {errors?.name?.message && <Error>{errors.name.message }</Error>}
       </FormRow>
 
@@ -96,6 +115,7 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="discount"
+          disabled={isWorking}
           defaultValue={0}
           {...register("discount", {required: "This field is required"})}
         />
@@ -107,6 +127,7 @@ function CreateCabinForm() {
         <Textarea
           type="number"
           id="description"
+          disabled={isWorking}
           defaultValue=""
           {...register("description" , {required: "This field is required"})}
         />
@@ -115,7 +136,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput id="image" accept="image/*"  {...register("image", { required: "This field is required" })} />
+        <FileInput id="image" accept="image/*"   disabled={isWorking}  {...register("image", { required: "This field is required" })} />
         {errors?.name?.message && <Error>{errors.name.message }</Error>}
       </FormRow>
 
@@ -124,7 +145,7 @@ function CreateCabinForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button disabled={isCreating}>Add cabin</Button>
+        <Button   disabled={isWorking}>Add cabin</Button>
       </FormRow>
     </Form>
   );
