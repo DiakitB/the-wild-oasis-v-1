@@ -72,13 +72,13 @@ function MainNav() {
         </li>
 
         <li>
-          <StyledLink to="/dashboard">
+          <StyledLink to="/users">
             <Useres />
             <span>Users</span>
           </StyledLink>
         </li>
         <li>
-          <StyledLink to="/dashboard">
+          <StyledLink to="/settings">
             <Setting />
             <span>Settings</span>
           </StyledLink>
