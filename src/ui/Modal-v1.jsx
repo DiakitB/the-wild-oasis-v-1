@@ -1,4 +1,3 @@
-import { createContext, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 
@@ -51,16 +50,8 @@ const Button = styled.button`
   }
 `;
 
-const ModalContext = createContext()
 
-
-function Modal({children}){
-
-  const [openName, setOpentName] = useState("")
-  const close = () => setOpentName("")
-  const open = setOpentName
-}
-export default function Window({ children, onClose }) {
+export default function Modal({ children, onClose }) {
 
  return createPortal(
     <Overlay>

@@ -52,7 +52,7 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({cabinData = {}}) {
+function CreateCabinForm({cabinData = {}, onCloseModel}) {
 
   
   const { id: dataId, ...editeData } = cabinData
@@ -69,36 +69,11 @@ function CreateCabinForm({cabinData = {}}) {
   const queryClient = useQueryClient();
 
 
-  // const { mutate: createNewCabin, isloading: isCreating } = useMutation({
-  //     mutationFn: createEditCabin,
-  //     onSuccess: () => {
-  //       toast.success("New cabin successfully created");
-  //       queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      
-  //     },
-  //     onError: (err) => {
-  //       toast.error(err.message);
-  //       // queryClient.invalidateQueries({ queryKey: ["cabins"] });
-  //     },
-  // });
   const { createNewCabin, isCreating } = useCreateCabin();
 
   const{editCabin, isEditing} = useEditCabin()
 
-  // const { mutate: editCabin, isloading: isEditing } = useMutation({
-  //   mutationFn: ({newCabinData, id}) =>createEditCabin(newCabinData, id),
-  //   onSuccess: () => {
-  //     toast.success("New cabin edited successfully created");
-  //     queryClient.invalidateQueries({ queryKey: ["cabins"] });
-  //     reset();
-  //   },
-  //   onError: (err) => {
-  //     toast.error(err.message);
-  //     // queryClient.invalidateQueries({ queryKey: ["cabins"] });
-  //   },
-  // });
 
-  
   
 
   const isWorking = isCreating || isEditing
@@ -118,6 +93,7 @@ function CreateCabinForm({cabinData = {}}) {
       onSuccess: (data) => {
         console.log(data)
         reset()
+        onCloseModel?.()
       }
     })
   }
@@ -180,10 +156,10 @@ function CreateCabinForm({cabinData = {}}) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset"  disabled={isWorking}>
+        <Button variation="secondary" type="reset"  disabled={isWorking} onClick={()=>onCloseModel?.()}>
           Cancel
         </Button>
-        <Button  disabled={isWorking}> { isEditSession ? "Edit Cabin" : "Create new Cabin"}</Button>
+        <Button  disabled={isWorking} > { isEditSession ? "Edit Cabin" : "Create new Cabin"}</Button>
       </FormRow>
     </Form>
   );
