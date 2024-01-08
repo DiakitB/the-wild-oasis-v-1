@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 
@@ -51,21 +51,56 @@ const Button = styled.button`
   }
 `;
 
-const ModalContext = createContext()
+// const ModalContext = createContext();
+
+// function Modal({ children }) {
+//   const [openName, setOpenName] = useState("");
+
+//   const close = () => setOpenName("");
+//   const open = setOpenName;
+
+//   return (
+//     <ModalContext.Provider value={{ openName, close, open }}>
+//       {children}
+//     </ModalContext.Provider>
+//   );
+// }
+
+// function Open({ children, opens: opensWindowName }) {
+//   const { open } = useContext(ModalContext);
+
+//   return cloneElement(children, { onClick: () => open(opensWindowName) });
+// }
 
 
-function Modal({children}){
+/// 1) Create Context
 
-  const [openName, setOpentName] = useState("")
-  const close = () => setOpentName("")
-  const open = setOpentName
+const ModalContext = createContext();
+
+/// 2 )Create the parent component
+
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("")
+  const open = setOpenName;
+  const close = () => setOpenName("")
+  return <ModalContext.Provider value={{open, close, openName}}>{children }</ModalContext.Provider>
 }
-export default function Window({ children, onClose }) {
 
+ /// Create children components to helps implementing the tasks
+ function Open({ children, opens: opensWindowName }) {
+  const { open } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => open(opensWindowName) });
+}
+
+
+ function Window({ children,name }) {
+  const { openName, close } = useContext(ModalContext);
+   if (name !== openName) return null;
  return createPortal(
     <Overlay>
       <StyledModal>
-        <Button onClick={onClose}>
+        <Button onClick={close}>
          x
         </Button>
 
@@ -75,3 +110,7 @@ export default function Window({ children, onClose }) {
     document.body
   );
 }
+
+Modal.Open = Open
+Modal.Window = Window
+export default Modal;

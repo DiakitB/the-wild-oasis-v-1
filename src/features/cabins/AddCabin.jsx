@@ -5,7 +5,7 @@ import Modal from "../../ui/Modal"
 
 function AddCabin() {
     return <Modal>
-        <Modal.Open onpens="cabin-form">
+        <Modal.Open  opens="cabin-form">
             <Button>Add new Cabin</Button>
         </Modal.Open>
         <Modal.Window name="cabin-form">
@@ -19,7 +19,7 @@ function AddCabin() {
         </Modal.Window> */}
     </Modal>
 }
-
+export default AddCabin
 // export default function AddCabin() {
 //     const [isModelOpen, setIsModelOpen] = useState(false)
 //     return <div>
