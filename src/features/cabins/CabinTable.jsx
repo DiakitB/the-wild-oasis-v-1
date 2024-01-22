@@ -34,16 +34,23 @@ export default function CabinTable() {
   const { isLoading, cabins, error } = useCabins()
    
 const[searchParams] = useSearchParams()
+  const sortBy = searchParams.get("sortBy") || "startDate-asc"
 
 
-
-  if (isLoading) return <Spinner />;
   const filterValue = searchParams.get("discount") || "all"
+  if (isLoading) return <Spinner />;
+
   let filterCabin;
 
   if (filterValue=== "all") filterCabin = cabins;
   if (filterValue === "no-discount") filterCabin = cabins.filter(cabin => cabin.discount === 0)
-  if(filterValue === "with-discount") filterCabin = cabins.filter(cabin => cabin.discount > 0)
+  if (filterValue === "with-discount") filterCabin = cabins.filter(cabin => cabin.discount > 0)
+
+  const [field, direction] = sortBy.split('-')
+  console.log(field, direction)
+  const modifier = direction === "asc" ? 1 : -1;
+  const sortedCabin = filterCabin.sort((a, b) => (a[field] - b[field])* modifier) 
+  console.log(modifier,sortedCabin)
   return (
     <Table role="table">
       <TableHeader role="row">
