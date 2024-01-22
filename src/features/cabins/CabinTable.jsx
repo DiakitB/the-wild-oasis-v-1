@@ -5,6 +5,7 @@ import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
 import { useParams, useSearchParams } from "react-router-dom";
+import Body from "../../ui/Table";
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
 
@@ -34,36 +35,40 @@ export default function CabinTable() {
   const { isLoading, cabins, error } = useCabins()
    
 const[searchParams] = useSearchParams()
-  const sortBy = searchParams.get("sortBy") || "startDate-asc"
+
 
 
   const filterValue = searchParams.get("discount") || "all"
   if (isLoading) return <Spinner />;
 
-  let filterCabin;
+  let filteredCabin;
 
-  if (filterValue=== "all") filterCabin = cabins;
-  if (filterValue === "no-discount") filterCabin = cabins.filter(cabin => cabin.discount === 0)
-  if (filterValue === "with-discount") filterCabin = cabins.filter(cabin => cabin.discount > 0)
+  if (filterValue=== "all") filteredCabin = cabins;
+  if (filterValue === "no-discount") filteredCabin = cabins.filter(cabin => cabin.discount === 0)
+  if (filterValue === "with-discount") filteredCabin = cabins.filter(cabin => cabin.discount > 0)
 
-  const [field, direction] = sortBy.split('-')
-  console.log(field, direction)
+  // 2) SORT
+  const sortBy = searchParams.get("sortBy") || "startDate-asc";
+  const [field, direction] = sortBy.split("-");
   const modifier = direction === "asc" ? 1 : -1;
-  const sortedCabin = filterCabin.sort((a, b) => (a[field] - b[field])* modifier) 
-  console.log(modifier,sortedCabin)
+  const sortedCabins = filteredCabin.sort(
+    (a, b) => (a[field] - b[field]) * modifier
+  );
+  console.log(sortedCabins)
   return (
-    <Table role="table">
-      <TableHeader role="row">
-        <div></div>
-        <div>Cabin</div>
-        <div>Capacity</div>
-        <div>Price</div>
-        <div>Discount</div>
-        <div></div>
-      </TableHeader>
-      {filterCabin.map((cabin) => (
-        <CabinRow cabin={cabin} key={cabin.id} />
-      ))}
-    </Table>
+      <Table role="table">
+        <TableHeader role="row">
+          <div></div>
+          <div>Cabin</div>
+          <div>Capacity</div>
+          <div>Price</div>
+          <div>Discount</div>
+          <div></div>
+        </TableHeader>
+      <Body data={sortedCabins}
+        render={(cabin) => (<CabinRow cabin={cabin} key={cabin.id} />)} />
+        
+        </Table>
+    
   );
 }
