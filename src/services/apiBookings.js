@@ -15,11 +15,27 @@ import supabase from "./supabase";
 
 //   return data;
 // }
+
+// {
+//   "id": 1,
+//   "created_at": "2023-11-25T02:09:08.280588+00:00",
+//   "startDate": "2023-12-03T21:05:00",
+//   "numberNights": 2,
+//   "totalPrice": 475,
+//   "status": "unconfirmed",
+//   "cabins": {
+//       "name": "001"
+//   },
+//   "guesses": {
+//       "fullName": "Vanessa",
+//       "email": "test@gmail.com"
+//   }
+// }
 export async function getAllBookings() {
   
 const  { data, error } = await supabase
 .from('bookings')
-.select('*')
+.select("id, created_at, startDate, endDate, numberNights, status, totalPrice, cabins(name), guesses(fullName, email)")
 
   if (error) {
     console.error(error);

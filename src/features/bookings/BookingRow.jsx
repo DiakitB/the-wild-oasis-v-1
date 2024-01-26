@@ -34,53 +34,63 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
-function BookingRow({
-  booking: {
-    id: bookingId,
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
-    totalPrice,
-    status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
-  const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
-  };
+// function BookingRow({
+//   booking: {
+//     id: bookingId,
+//     created_at,
+//     startDate,
+//     endDate,
+//     numNights,
+//     numGuests,
+//     totalPrice,
+//     status,
+//     guests: { fullName: guestName, email },
+//     cabins: { name: cabinName },
+//   },
+// }) {
+//   const statusToTagName = {
+//     unconfirmed: "blue",
+//     "checked-in": "green",
+//     "checked-out": "silver",
+//   };
 
-  return (
-    <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+//   return (
+//     <Table.Row>
+//       <Cabin>{cabinName}</Cabin>
 
-      <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
-      </Stacked>
+//       <Stacked>
+//         <span>{guestName}</span>
+//         <span>{email}</span>
+//       </Stacked>
 
-      <Stacked>
-        <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
-        </span>
-        <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
-        </span>
-      </Stacked>
+//       <Stacked>
+//         <span>
+//           {isToday(new Date(startDate))
+//             ? "Today"
+//             : formatDistanceFromNow(startDate)}{" "}
+//           &rarr; {numNights} night stay
+//         </span>
+//         <span>
+//           {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
+//           {format(new Date(endDate), "MMM dd yyyy")}
+//         </span>
+//       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+//       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
-    </Table.Row>
-  );
+//       <Amount>{formatCurrency(totalPrice)}</Amount>
+//     </Table.Row>
+//   );
+// }
+
+// export default BookingRow;
+
+
+function BookingRow({ booking }) {
+  if (booking) console.log(booking)
+  return <div>
+    <h1>testing booking</h1>
+  </div>
 }
 
-export default BookingRow;
+export default BookingRow
