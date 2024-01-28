@@ -6,7 +6,17 @@ import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+const TableRow = styled.div`
+  display: grid;
+  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  column-gap: 2.4rem;
+  align-items: center;
+  padding: 1.4rem 2.4rem;
 
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`;
 const Cabin = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
@@ -33,18 +43,32 @@ const Amount = styled.div`
   font-family: "Sono";
   font-weight: 500;
 `;
-
+// {
+//   "id": 1,
+//   "created_at": "2023-11-25T02:09:08.280588+00:00",
+//   "startDate": "2023-12-03T21:05:00",
+//   "numberNights": 2,
+//   "totalPrice": 475,
+//   "status": "unconfirmed",
+//   "cabins": {
+//       "name": "001"
+//   },
+//   "guesses": {
+//       "fullName": "Vanessa",
+//       "email": "test@gmail.com"
+//   }
+// }
 // function BookingRow({
 //   booking: {
 //     id: bookingId,
 //     created_at,
 //     startDate,
 //     endDate,
-//     numNights,
-//     numGuests,
+//     numberNights,
+//     numberGuests,
 //     totalPrice,
 //     status,
-//     guests: { fullName: guestName, email },
+//     guesses: { fullName: guestName, email },
 //     cabins: { name: cabinName },
 //   },
 // }) {
@@ -68,7 +92,7 @@ const Amount = styled.div`
 //           {isToday(new Date(startDate))
 //             ? "Today"
 //             : formatDistanceFromNow(startDate)}{" "}
-//           &rarr; {numNights} night stay
+//           &rarr; {numberNights} night stay
 //         </span>
 //         <span>
 //           {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
@@ -86,11 +110,72 @@ const Amount = styled.div`
 // export default BookingRow;
 
 
-function BookingRow({ booking }) {
+function BookingRow({ booking}) {
   if (booking) console.log(booking)
-  return <div>
-    <h1>testing booking</h1>
-  </div>
+  const {
+    id,
+    created_at,
+    startDate,
+    endDate,
+    numberNights,
+    numberGuests,
+    totalPrice,
+    status,
+    guesses: { fullName: guestName, email },
+    cabins: { name: cabinName } } = booking
+  
+  
+    const statusToTagName = {
+          unconfirmed: "blue",
+         "checked-in": "green",
+           "checked-out": "silver",
+         }
+         return (
+          <TableRow>
+            <Cabin>{cabinName}</Cabin>
+      
+            <Stacked>
+              <span>{guestName}</span>
+              <span>{email}</span>
+            </Stacked>
+      
+            <Stacked>
+              <span>
+                {isToday(new Date(startDate))
+                  ? "Today"
+                  : formatDistanceFromNow(startDate)}{" "}
+                &rarr; {numberNights} night stay
+              </span>
+              <span>
+                {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
+                {format(new Date(endDate), "MMM dd yyyy")}
+              </span>
+            </Stacked>
+      
+            <Tag type={statusToTagName[status]}>{status}</Tag>
+      
+            <Amount>{formatCurrency(totalPrice)}</Amount>
+          </TableRow>
+        )
 }
 
 export default BookingRow
+
+
+// {
+//    booking: {
+//       id: bookingId,
+//       created_at,
+//       startDate,
+//       endDate,
+//       numberNights,
+//       numberGuests,
+//       totalPrice,
+//      status,
+//      guesses: { fullName: guestName, email },
+//       cabins: { name: cabinName },
+//     },
+//    }
+
+
+

@@ -17,25 +17,27 @@ import supabase from "./supabase";
 // }
 
 // {
-//   "id": 1,
-//   "created_at": "2023-11-25T02:09:08.280588+00:00",
-//   "startDate": "2023-12-03T21:05:00",
+//   "id": 2,
+//   "created_at": "2024-01-22T02:04:08.002487+00:00",
+//   "startDate": "2024-01-22T09:00:54",
+//   "endDate": "2024-01-24T21:01:29",
 //   "numberNights": 2,
-//   "totalPrice": 475,
-//   "status": "unconfirmed",
-//   "cabins": {
-//       "name": "001"
-//   },
-//   "guesses": {
-//       "fullName": "Vanessa",
-//       "email": "test@gmail.com"
-//   }
+//   "numberGuests": 2,
+//   "cabinPrice": 250,
+//   "extrasPrice": null,
+//   "totalPrice": null,
+//   "status": null,
+//   "hasBreakfast": null,
+//   "isPaid": null,
+//   "observation": "unconform",
+//   "cabinId": 1,
+//   "guestId": 1
 // }
 export async function getAllBookings() {
   
 const  { data, error } = await supabase
 .from('bookings')
-.select("id, created_at, startDate, endDate, numberNights, status, totalPrice, cabins(name), guesses(fullName, email)")
+.select("id, created_at, startDate, endDate, numberNights, numberGuests, totalPrice, status, cabins(name), guesses(fullName, email)")
 
   if (error) {
     console.error(error);
@@ -140,3 +142,22 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+
+
+// {
+//   "id": 2,
+//   "created_at": "2024-01-22T02:04:08.002487+00:00",
+//   "startDate": "2024-01-22T09:00:54",
+//   "endDate": "2024-01-24T21:01:29",
+//   "numberNights": 2,
+//   "numberGuests": 2,
+//   "cabinPrice": 250,
+//   "extrasPrice": null,
+//   "totalPrice": null,
+//   "status": null,
+//   "hasBreakfast": null,
+//   "isPaid": null,
+//   "observation": "unconform",
+//   "cabinId": 1,
+//   "guestId": 1
+// }
