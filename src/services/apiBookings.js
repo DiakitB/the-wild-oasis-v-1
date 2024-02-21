@@ -33,12 +33,14 @@ import supabase from "./supabase";
 //   "cabinId": 1,
 //   "guestId": 1
 // }
-export async function getAllBookings() {
-  
-const  { data, error } = await supabase
+export async function getAllBookings({filter, sortBy}) {
+
+let query =  supabase
 .from('bookings')
 .select("id, created_at, startDate, endDate, numberNights, numberGuests, totalPrice, status, cabins(name), guesses(fullName, email)")
-
+// .eq('status', 'checked-in')
+if(filter !== null) query = query.eq(filter.field, filter.value)
+const  { data, error } = await query
   if (error) {
     console.error(error);
     throw new Error("Booking not found");
