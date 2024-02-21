@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useBooking } from "./useBooking";
 
 import BookingRow from "../../features/bookings/BookingRow"
+import Pagination from "../../ui/Pagination";
 
 const Menu = styled.div`
   display: flex;
@@ -26,40 +27,17 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
+const Footer = styled.footer`
+  background-color: var(--color-grey-50);
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem;
 
-// function BookingTable() {
-
-//   const {isLoading, bookings, error} = useBooking()
-//   console.log(bookings)
-
-//   if(!bookings)  return <Empty resourceName="booking"/>
-//   console.log(bookings)
-//   return (
-//     <Menu>
-//       <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
-//         <TableHeader>
-//           <div>Cabin</div>
-//           <div>Guest</div>
-//           <div>Dates</div>
-//           <div>Status</div>
-//           <div>Amount</div>
-//           <div></div>
-//         </TableHeader>
-//       {bookings.map((booking)=><BookingRow booking={booking}/>)}
-//       </Table>
-    
-//     </Menu>
-//   );
-// }
-
-// export default BookingTable;
-
-
-// We could create yet another layer of abstraction on top of this. We could call this component just <Results>, like: Results({data, count, isLoading, columns, rowComponent}). Then <BookingTable> and ALL other tables would simply call that.
-// BUT, creating more abstractions also has a cost! More things to remember, more complex codebase to understand. Sometimes it's okay to just copy and paste instead of creating abstractions
-
-
-
+  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
+  &:not(:has(*)) {
+    display: none;
+  }
+`
 function BookingTable() {
   const { isLoading, bookings, error } = useBooking()
 
@@ -73,8 +51,12 @@ function BookingTable() {
         <div>Status</div>
         <div></div>
       </TableHeader>
-      {bookings?.map((booking)=><BookingRow booking={booking}/>)}
+      {bookings?.map((booking) => <BookingRow booking={booking} />)}
+      <Footer>
+        <Pagination count={45}/>
+      </Footer>
     </table>
+    
   </Menu>
 }
 export default BookingTable
