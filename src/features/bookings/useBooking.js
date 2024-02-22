@@ -6,15 +6,26 @@ import { useSearchParams } from "react-router-dom";
 export function useBooking() {
   const [searchParams] = useSearchParams()
   const filterValue = searchParams.get("status")
-  const filter = !filterValue || filterValue === "all" ? null : {field: "status", value: filterValue}
+  //FILTER
+  const filter = !filterValue || filterValue === "all" ? null :
+    { field: "status", value: filterValue }
+  
+  //PAGINATION
+
+  const page = !searchParams.get("page")
+    ? 1
+    : Number(searchParams.get("page"));
+  
+  
+  
     const {
         isLoading,
-        data: bookings,
+        data: {data:bookings, count} = {},
         error,
       } = useQuery({
-        queryKey: ["bookings", filter],
-        queryFn:()=> getAllBookings({filter}),
+        queryKey: ["bookings", filter, page],
+        queryFn:()=> getAllBookings({filter, page}),
       });
     
-    return{isLoading, bookings, error}
+    return{isLoading, bookings,count, error}
 }

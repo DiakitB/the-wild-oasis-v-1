@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from "../utils/const";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
@@ -33,20 +34,28 @@ import supabase from "./supabase";
 //   "cabinId": 1,
 //   "guestId": 1
 // }
-export async function getAllBookings({filter, sortBy}) {
+export async function getAllBookings({filter, sortBy, page}) {
 
 let query =  supabase
 .from('bookings')
-.select("id, created_at, startDate, endDate, numberNights, numberGuests, totalPrice, status, cabins(name), guesses(fullName, email)")
-// .eq('status', 'checked-in')
-if(filter !== null) query = query.eq(filter.field, filter.value)
-const  { data, error } = await query
+  .select("id, created_at, startDate, endDate, numberNights, numberGuests, totalPrice, status, cabins(name), guesses(fullName, email)",
+    { count: "exact"})
+ 
+  //FILTER
+  if (filter !== null) query = query.eq(filter.field, filter.value)
+  //PAGINATION
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1
+    query = query.range(from, to)
+  }
+const  { data, count, error } = await query
   if (error) {
     console.error(error);
     throw new Error("Booking not found");
   }
 
-  return data;
+  return {data,count};
 }
 
 

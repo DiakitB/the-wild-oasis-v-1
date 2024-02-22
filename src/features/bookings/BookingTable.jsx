@@ -39,7 +39,7 @@ const Footer = styled.footer`
   }
 `
 function BookingTable() {
-  const { isLoading, bookings, error } = useBooking()
+  const { isLoading, bookings,count, error } = useBooking()
 
   if(bookings)console.log(bookings)
   return <Menu>
@@ -53,7 +53,7 @@ function BookingTable() {
       </TableHeader>
       {bookings?.map((booking) => <BookingRow booking={booking} />)}
       <Footer>
-        <Pagination count={45}/>
+        <Pagination count={count}/>
       </Footer>
     </table>
     
